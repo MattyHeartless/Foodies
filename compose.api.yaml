@@ -1,0 +1,24 @@
+name: foodies-api
+services:
+  api:
+    image: foodies-api:local
+    build:
+      context: .
+      dockerfile: backend/Foodies.Api/Dockerfile
+    env_file:
+      - path: .env.api
+        format: raw
+    ports:
+      - "127.0.0.1:${FOODIES_API_PORT:-5089}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - foodies_media:/data/foodies/media
+      - foodies_keys:/data/foodies/keys
+    restart: unless-stopped
+    stop_grace_period: 20s
+volumes:
+  foodies_media:
+    name: foodies_media
+  foodies_keys:
+    name: foodies_keys

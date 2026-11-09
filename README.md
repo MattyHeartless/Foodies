@@ -132,6 +132,12 @@ Antes de alojar: configurar un origen HTTPS y AllowedHosts del dominio, cuenta S
 
 Ver [análisis y evidencia de implementación](docs/IMPLEMENTACION.md).
 
+API en Docker: [Dockerfile](backend/Foodies.Api/Dockerfile), [Compose](compose.api.yaml), [variables de ejemplo](.env.api.example) y [guía de arranque, migraciones y persistencia](docs/API_DOCKER.md). Construir desde la raíz del repositorio con `docker build -f backend/Foodies.Api/Dockerfile -t foodies-api:local .`.
+
+Frontend en Docker: [Dockerfile](frontend/Dockerfile) y [guía de frontend y arranque conjunto](docs/FRONTEND_DOCKER.md). Con `.env.api` configurado, `docker compose up -d --build` levanta ambos servicios desde [compose.yaml](compose.yaml): frontend en 3003 y API en 5089 del anfitrión. La dirección interna de la API se fija al compilar el frontend; por defecto es `http://api:8080`.
+
+Publicación: [plan de despliegue y variables necesarias](docs/DEPLOYMENT.md). Las plantillas son [.env.example](.env.example) para Compose/frontend y [.env.api.example](.env.api.example) para la API.
+
 Portadas: se pueden subir JPG, PNG o WebP (hasta 5 MB) desde Configuración o usar una URL HTTPS. Los archivos viven en `Media:StoragePath`, por defecto `backend/Foodies.Api/App_Data/media`. Para producción configurar `Media__StoragePath` y montar un volumen persistente; ver [portadas y almacenamiento](docs/STORE_COVER.md) y el [fragmento Compose](deploy/compose.media.example.yaml).
 
 Las transiciones de la interfaz y sus pruebas están documentadas en [movimiento de Foodies](docs/MOTION.md). Ejecutar `npm run test:motion` dentro de `frontend` para validar los componentes animados.

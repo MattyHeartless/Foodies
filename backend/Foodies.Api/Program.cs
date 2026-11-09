@@ -6,10 +6,17 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection;
+
+if (args.Contains("--healthcheck")) { Environment.ExitCode = await ContainerHealth.Run(); return; }
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders(); builder.Logging.AddSimpleConsole(o => o.SingleLine = true);
 builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true).AddEnvironmentVariables();
+if (!string.IsNullOrWhiteSpace(builder.Configuration["DataProtection:KeyPath"])) {
+    var keyPath = Path.GetFullPath(builder.Configuration["DataProtection:KeyPath"]!, builder.Environment.ContentRootPath);
+    builder.Services.AddDataProtection().SetApplicationName("Foodies").PersistKeysToFileSystem(Directory.CreateDirectory(keyPath));
+}
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddDbContext<FoodiesDb>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("Foodies")));
 builder.Services.AddScoped<OrderService>(); builder.Services.AddSingleton<EventHub>();
