@@ -1,0 +1,103 @@
+﻿/* Phone is the base layout. Desktop progressively adds a second column. */
+.profile {
+  --profile-muted: #5c6b5e; --profile-border: #d7ddd2; --profile-error: #923b2c;
+  max-width: 1196px; padding: 16px 20px 32px; font-variant-numeric: tabular-nums;
+}
+.back { display: none; }
+.heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 0; }
+.heading h1 { font-size: 24px; line-height: 1.25; letter-spacing: -.8px; }
+.heading p { display: none; }
+.heading > a { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 550; min-height: 44px; flex-shrink: 0; }
+.identity { display: grid; grid-template-columns: 40px minmax(0,1fr); column-gap: 12px; row-gap: 2px; align-items: center; padding: 16px 0 20px; }
+.avatar { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--soft); color: var(--green); font: 550 15px 'Manrope',Arial,sans-serif; }
+.identity > div { min-width: 0; }
+.identity strong { display: block; font-family: 'Manrope',Arial,sans-serif; font-size: 16px; font-weight: 650; letter-spacing: -.4px; overflow-wrap: anywhere; }
+.identity > div > span { display: none; }
+.identityStatus { grid-column: 2; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--profile-muted); }
+.identityStatus svg { width: 14px; height: 14px; }
+.layout { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; align-items: start; }
+.details, .phonePanel { min-width: 0; padding: 20px; border-radius: 16px; }
+.details { background: var(--white); }
+.phonePanel { order: -1; background: var(--soft); }
+.details h2, .phonePanel h2 { font-size: 20px; line-height: 1.3; letter-spacing: -.6px; }
+.detailsHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.details h2 { font-size: 17px; }
+.detailsToggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 10px; margin: -10px -8px -10px 0; border: 0; border-radius: 8px; background: transparent; color: var(--ink); }
+.detailsBody { min-height: 0; }
+.detailsContent { padding: 4px; }
+.detailsContent > p, .phonePanel > p { color: var(--profile-muted); margin-top: 8px; font-size: 14px; line-height: 1.55; }
+.profile form { margin-top: 20px; }
+.profile label { display: block; font-size: 14px; font-weight: 550; margin: 0 0 8px; color: var(--ink); }
+.profile input { display: block; width: 100%; min-width: 0; padding: 12px; height: 48px; font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--white); border: 1px solid var(--profile-border); border-radius: 8px; margin: 0; }
+.profile input:focus { outline: 2px solid var(--green); outline-offset: 2px; }
+.profile input[aria-invalid="true"] { border-color: var(--profile-error); }
+.profile small { display: block; font-size: 12px; color: var(--profile-muted); margin-top: 8px; line-height: 1.5; }
+.details form > input { margin-bottom: 20px; }
+.emailField { display: flex; align-items: center; gap: 10px; background: var(--bg); border-radius: 8px; padding-inline: 12px; color: var(--profile-muted); }
+.emailField > svg { flex-shrink: 0; }
+.profile .emailField input { padding-inline: 0; border: 0; background: transparent; color: var(--profile-muted); text-overflow: ellipsis; }
+.nameActions { display: flex; align-items: center; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+.profile :global(.button) { font-size: 14px; min-height: 48px; }
+.profile :global(.button.secondary) { background: transparent; color: var(--ink); border-color: var(--profile-border); }
+.profile :global(.button.secondary):disabled { opacity: 1; color: var(--profile-muted); background: var(--bg); border-color: transparent; }
+.saved { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-size: 13px; }
+.panelHeading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.panelHeading > svg { color: var(--green); flex-shrink: 0; margin-top: 2px; width: 21px; height: 21px; }
+.phoneField { display: flex; align-items: stretch; gap: 8px; }
+.prefix { display: grid; place-items: center; min-width: 58px; border-radius: 8px; background: #e1e8d9; color: var(--ink); font-size: 16px; }
+.phoneField input { flex: 1; width: 0; font-variant-numeric: tabular-nums; }
+.phoneForm > :global(.button), .pinStep :global(.button) { margin-top: 18px; }
+.previousNumber { font-size: 13px; color: var(--profile-muted); margin-bottom: 16px; overflow-wrap: anywhere; }
+.phoneFoot { display: flex; align-items: flex-start; gap: 8px; padding-top: 18px; color: var(--profile-muted); font-size: 12px; }
+.phoneFoot > svg { flex-shrink: 0; margin-top: 1px; }
+.textAction { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 0; border: 0; background: transparent; color: var(--green); font-size: 13px; font-weight: 550; }
+.textAction:hover { text-decoration: underline; text-underline-offset: 4px; }
+.textAction:disabled { color: var(--profile-muted); opacity: 1; text-decoration: none; }
+.phoneForm > .textAction { margin-top: 8px; }
+.verifiedBlock { display: flex; flex-direction: column; align-items: flex-start; margin-block: 20px 0; }
+.verifiedLabel { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--green); }
+.verifiedBlock > strong { font-family: 'Manrope',Arial,sans-serif; font-size: 24px; font-weight: 550; line-height: 1.4; letter-spacing: -.6px; margin-top: 8px; overflow-wrap: anywhere; max-width: 100%; }
+.verifiedBlock .textAction { margin-top: 4px; }
+.recipient { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.recipient > span { color: var(--ink); font-size: 16px; font-weight: 550; }
+.profile .pinStep form { margin-top: 8px; }
+.profile .pinInput { font-size: 26px; letter-spacing: .22em; height: 56px; font-variant-numeric: tabular-nums; }
+.profile .pinInput::placeholder { color: #909b8a; }
+.pinStep small { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.resend { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--profile-muted); }
+.error { font-size: 14px; color: var(--profile-error); line-height: 1.6; margin-top: 12px; }
+.serviceNote { font-size: 13px; color: var(--profile-muted); margin-top: 16px; }
+.returnRow { display: flex; justify-content: center; margin-top: 16px; }
+.returnLink { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; font-size: 14px; font-weight: 550; }
+:global(body):has(.profile) :global(header nav a), :global(body):has(.profile) :global(footer p), :global(body):has(.profile) :global(footer > span) { color: #5c6b5e; }
+:global(body):has(.profile) :global(footer p), :global(body):has(.profile) :global(footer > span) { font-size: 12px; }
+@media (min-width: 601px) {
+  .profile { padding-inline: 32px; }
+  .heading h1 { font-size: 28px; }
+  .heading p { display: block; color: var(--profile-muted); font-size: 15px; margin-top: 9px; }
+  .details, .phonePanel { padding: 24px; }
+}
+@media (min-width: 901px) {
+  .profile { padding: 32px 48px 56px; }
+  .back { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--profile-muted); min-height: 44px; }
+  .heading { margin: 20px 0 28px; gap: 24px; }
+  .heading h1 { font-size: 30px; }
+  .heading > a { font-size: 14px; }
+  .identity { display: flex; gap: 16px; padding: 24px 0 32px; }
+  .avatar { width: 58px; height: 58px; font-size: 20px; flex-shrink: 0; }
+  .identity strong { font-size: 18px; }
+  .identity > div > span { display: block; margin-top: 4px; font-size: 13px; color: var(--profile-muted); }
+  .identityStatus { margin-left: auto; font-size: 13px; }
+  .identityStatus svg { width: 17px; height: 17px; }
+  /* 5/7 desktop columns are added only after the phone layout works. */
+  .layout { grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 24px; }
+  .phonePanel { order: 0; }
+  .details, .phonePanel { padding: 30px; }
+  .details h2, .phonePanel h2 { font-size: 22px; }
+  .detailsToggle { display: none; }
+  .profile form { margin-top: 26px; }
+  .phoneFoot { padding-top: 24px; }
+  .verifiedBlock { margin-block: 30px 12px; }
+  .verifiedBlock > strong { font-size: 28px; }
+  .returnRow { justify-content: flex-end; margin-top: 24px; }
+}

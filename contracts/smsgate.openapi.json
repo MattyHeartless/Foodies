@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "Foodies SMSGate integration subset", "version": "1.0.0", "description": "Subset from the supplied working request and docs.sms-gate.app/features/sending-messages/. Pending is submission, not delivery. Foodies requires exactly 180 characters." },
+  "servers": [{ "url": "https://api.sms-gate.app" }],
+  "components": { "securitySchemes": { "basic": { "type": "http", "scheme": "basic" } } },
+  "paths": { "/3rdparty/v1/messages": { "post": {
+    "security": [{ "basic": [] }],
+    "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["id", "textMessage", "phoneNumbers", "ttl"], "properties": {
+      "id": { "type": "string" }, "textMessage": { "type": "object", "required": ["text"], "properties": { "text": { "type": "string", "minLength": 180, "maxLength": 180 } } }, "phoneNumbers": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "type": "string" } }, "ttl": { "type": "integer", "enum": [300] }
+    } } } } },
+    "responses": { "202": { "description": "Accepted for asynchronous sending", "content": { "application/json": { "schema": { "type": "object", "required": ["id", "state"], "properties": { "id": { "type": "string" }, "state": { "type": "string", "example": "Pending" } } } } } }, "401": { "description": "Invalid credentials" }, "500": { "description": "Provider failure" } }
+  } } }
+}

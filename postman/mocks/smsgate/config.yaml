@@ -1,0 +1,11 @@
+version: 1
+id: 93978881-29e5-4fac-8c37-3c4d1c2a4b83
+name: Foodies SMSGate integration subset
+slug: foodies-smsgate-integration-subs
+protocol: http
+port: 4500
+interceptRequests: true
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true

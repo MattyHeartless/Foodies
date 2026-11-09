@@ -1,0 +1,21 @@
+# Portada de la tienda
+
+El encargado sube una imagen o configura una URL HTTPS pública en Configuración → La identidad de tu tienda → Imagen de portada. El administrador de plataforma puede editarla también; para subir un archivo la tienda debe existir. La vista previa usa un recorte horizontal; se recomienda 1200 × 600 px. JPG, PNG y WebP de hasta 5 MB. El cambio se aplica al guardar el formulario; mientras sube el archivo, Guardar queda deshabilitado. Quitar portada guarda null.
+
+CoverImageUrl es un campo independiente de las fotos de los platillos. Se devuelve en las rutas públicas y alimenta la tarjeta de tienda en la página principal. Una portada vacía o que no carga muestra una alternativa neutral, sin tomar el primer producto. Las URL externas deben usar HTTPS, hasta 500 caracteres y sin credenciales. Las subidas usan rutas relativas del mismo origen, por lo que sobreviven a un cambio de dominio.
+
+## Archivos y persistencia
+
+Los archivos se guardan en `Media:StoragePath`; por defecto, `backend/Foodies.Api/App_Data/media` en desarrollo. Es una carpeta excluida del repositorio y del contexto de Docker. Se separan en `stores/{storeId}/` y se generan nombres UUID con extensión determinada por la firma del archivo, sin usar el nombre enviado por el navegador. Se rechazan otros formatos y SVG; no se procesa ni ejecuta el contenido. No hay conversión, compresión ni borrado automático de archivos antiguos en esta versión.
+
+La carga escribe el archivo y devuelve `{url}`; Guardar configuración publica esa ruta en la tienda. Un archivo cargado sin guardar queda almacenado pero no pasa a ser la portada. Cambiar o quitar una portada no borra archivos para no romper referencias ni perder imágenes durante ediciones.
+
+`POST /api/v1/admin/stores/{storeId}/cover-image` requiere sesión, CSRF y rol Manager de esa tienda. La plataforma tiene un endpoint equivalente con su sesión independiente. Ambos aceptan `multipart/form-data`, un único campo `file`. `GET /api/v1/media/stores/{storeId}/{fileName}` es público para mostrar las portadas, con tipo de imagen explícito, `nosniff` y caché inmutable. Las rutas relativas guardadas deben pertenecer a la tienda editada.
+
+Para producción, fusionar [compose.media.example.yaml](../deploy/compose.media.example.yaml) con el Compose del despliegue. Es un fragmento para el servicio backend `api`; no constituye el despliegue completo. Crear una vez `docker volume create foodies_media`, montar el volumen en `/data/foodies/media` y configurar `Media__StoragePath` con esa misma ruta. Si el servicio tiene otro nombre, adaptar `api`. El proceso de la API necesita permiso de escritura sobre el directorio; preparar su propietario/permisos para el UID usado por la imagen de producción. El volumen se declara externo para separarlo del ciclo de vida del proyecto Compose. No se ha publicado ni creado ese volumen en este cambio.
+
+El proxy debe reenviar `/api/v1/media/*` a la API, igual que las otras rutas `/api`; la configuración actual de Next.js ya lo hace. Mantener el mismo volumen al reemplazar el contenedor y respaldarlo junto con SQL Server: la base de datos guarda las rutas, los archivos viven en el volumen. Si se ejecutan varias réplicas, todas deben compartir almacenamiento. Referencia: [volúmenes de Docker](https://docs.docker.com/engine/storage/volumes/).
+
+La migración añade una columna nullable y conserva como datos las dos fotos de ejemplo que antes se elegían por slug en el frontend. Las tiendas nuevas comienzan sin portada. El teléfono privado de cocina sigue excluido de la respuesta pública.
+
+Validación: 66 pruebas del backend aprobadas, incluyendo carga multipart por encargado y plataforma, CSRF, restricciones de rol/tienda, firma/formato, archivo vacío, límite de tamaño, nombres seguros, descarga pública y persistencia desde una instancia nueva de la API con la misma carpeta. Pruebas de navegador con datos sintéticos: selección nativa de archivo, envío multipart con CSRF, bloqueo de Guardar durante la carga, vista previa, imagen rota, guardado, tarjeta pública, quitar portada y ausencia de desbordamiento en 320/390/768/1440 px. El fragmento de Compose se validó con docker compose config; el volumen y el despliegue de producción siguen pendientes de crearse al publicar.

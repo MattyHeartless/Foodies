@@ -1,0 +1,12 @@
+# Merge into the production Compose project. The backend service is called api.
+services:
+  api:
+    environment:
+      Media__StoragePath: /data/foodies/media
+    volumes:
+      - foodies_media:/data/foodies/media
+
+volumes:
+  foodies_media:
+    external: true
+    name: foodies_media

@@ -1,0 +1,23 @@
+/* Foodies signature: fall, travel, reveal, then hand the screen to the app. */
+.brand-intro {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center;
+  background: var(--bg); overflow: hidden;
+  animation: foodies-intro-release 0s 4s forwards;
+}
+.brand-intro-mark {
+  display: flex; align-items: center; gap: .08em;
+  font-family: 'Manrope', Arial, sans-serif; font-size: clamp(48px, 13vw, 80px);
+  font-weight: 800; letter-spacing: -.06em; line-height: 1.2; color: var(--ink);
+}
+.brand-intro-word { opacity: 0; }
+.brand-intro-symbol {
+  display: block; color: var(--orange); width: .818em; height: .9em; flex: none;
+  position: relative; top: 0; letter-spacing: 0;
+  transform: translateY(calc(-50dvh - 100px));
+}
+@keyframes foodies-intro-release { to { visibility: hidden; pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .brand-intro { display: none; animation: none; }
+}
+
+.brand-intro-symbol .brand-mark { display:block; width:100%; height:100%; }

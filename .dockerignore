@@ -1,0 +1,10 @@
+**/bin
+**/obj
+**/node_modules
+**/.next
+**/App_Data
+**/appsettings.Local.json
+**/.env*
+.runtime
+.taste-skill
+.git

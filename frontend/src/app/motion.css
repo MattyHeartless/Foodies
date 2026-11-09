@@ -1,0 +1,158 @@
+/* Foodies motion: transitions.dev recipes share the product's existing colors. */
+:root {
+  --modal-open-dur: var(--duration-fast);
+  --modal-close-dur: var(--duration-quick);
+  --modal-ease: var(--ease-smooth-out);
+  --modal-scale: var(--scale-large);
+  --modal-scale-close: var(--scale-large);
+  --toast-open: var(--duration-slow);
+  --toast-close: var(--duration-medium);
+  --toast-ease: var(--ease-smooth-out);
+  --toast-blur: var(--blur-small);
+  --tabs-dur: var(--duration-fast);
+  --tabs-ease: var(--ease-smooth-out);
+  --tabs-pill-bg: var(--green);
+  --digit-dur: var(--duration-fast);
+  --digit-distance: var(--distance-micro);
+  --digit-stagger: var(--duration-stagger);
+  --digit-blur: var(--blur-small);
+  --digit-ease: var(--ease-smooth-out);
+  --panel-open-dur: var(--duration-slow);
+  --panel-close-dur: var(--duration-medium);
+  --panel-translate-y: var(--distance-base);
+  --panel-blur: var(--blur-small);
+  --panel-ease: var(--ease-smooth-out);
+  --toggle-dur: var(--duration-medium);
+  --toggle-track: var(--duration-quick);
+  --toggle-travel: 15px;
+}
+
+.motion-overlay {
+  opacity: 0;
+  transition: opacity var(--modal-close-dur) var(--modal-ease);
+}
+.motion-overlay.is-open { opacity: 1; transition-duration: var(--modal-open-dur); }
+.motion-overlay.is-closing { opacity: 0; }
+.motion-overlay .modal { margin: auto; flex-shrink: 0; }
+.modal-shell {
+  width: 100%; max-width: 480px; max-height: 90vh; margin: auto; flex-shrink: 0;
+  border-radius: 18px; overflow: hidden; box-shadow: 0 25px 100px #10281d45;
+}
+.modal-shell-wide { max-width: 590px; }
+.modal-shell .modal {
+  max-width: none; margin: 0; border-radius: 0; box-shadow: none;
+  scrollbar-width: thin; scrollbar-color: #aeb8a6 transparent;
+}
+
+.toast-position {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 150; width: max-content; max-width: min(560px, calc(100vw - 32px));
+}
+.toast-position .toast {
+  position: relative; bottom: auto; left: auto; max-width: 100%; width: 100%;
+  padding: 12px 14px 12px 18px; gap: 10px;
+}
+.toast-position .toast > svg { flex-shrink: 0; color: #c2dfaf; }
+.toast-position .toast .icon { margin-left: 7px; flex-shrink: 0; color: #d3dfcd; }
+.toast-position .toast .icon:hover { background: #ffffff12; }
+.toast-position .t-toast:not(.is-open) { pointer-events: none; }
+.toast-message { line-height: 1.6; }
+.toast-message, .toast-check { animation: foodies-feedback var(--duration-fast) var(--ease-smooth-out) backwards; }
+
+.motion-number { display: inline-block; white-space: pre; font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.motion-number .t-digit-group { white-space: pre; }
+.motion-panel-clip { overflow: hidden; }
+.motion-panel-clip .checkout-summary { margin-bottom: 17px; }
+
+.category-tabs.t-tabs, .filter-row.t-tabs, .admin-nav.t-tabs {
+  display: flex; position: relative; width: 100%; background: transparent;
+  border-radius: 0; padding: 0; gap: 8px; isolation: isolate;
+}
+.category-tabs.t-tabs { padding-bottom: 17px; gap: 9px; }
+.admin-nav.t-tabs { padding-bottom: 13px; gap: 12px; }
+.t-tabs > :is(button, a) { position: relative; z-index: 1; }
+.t-tabs .t-tabs-pill { border-radius: 6px; opacity: 0; background: var(--green); }
+.t-tabs[data-ready="true"] > .selected { background: transparent; }
+.t-tabs > :is(button, a) { transition: color var(--duration-quick) var(--ease-in-out), background-color var(--duration-quick) var(--ease-in-out); }
+.t-tabs > :is(button, a):not(.selected):hover { background: #28554009; color: var(--ink); }
+.t-tabs > .selected { color: #fff; }
+
+.switch.t-toggle.on .t-toggle-thumb { transform: none; }
+.switch.t-toggle .t-toggle-thumb { transition: none; }
+.switch.t-toggle:disabled { cursor: progress; }
+
+.button, .icon, .add-button, .quantity button {
+  transition: background-color var(--duration-quick) var(--ease-in-out), color var(--duration-quick) var(--ease-in-out), transform var(--duration-fast) var(--ease-smooth-out);
+}
+.button:active:not(:disabled), .add-button:active:not(:disabled) { transform: scale(.98); }
+.quantity button:hover:not(:disabled) { color: var(--green); background: var(--soft); }
+.quantity button:active:not(:disabled) { transform: scale(.92); }
+.store-card { transition: transform var(--duration-fast) var(--ease-smooth-out), box-shadow var(--duration-fast) var(--ease-smooth-out); }
+.store-image img { transition: transform var(--duration-slow) var(--ease-smooth-out); }
+.store-card:hover { transform: translateY(-3px); }
+.store-card:hover img { transform: scale(1.025); }
+.store-title > span { transition: transform var(--duration-fast) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-in-out); }
+.store-card:hover .store-title > span { transform: translate(2px, -2px); background: #eaf0e0; }
+.dish-card { transition: border-color var(--duration-quick) var(--ease-in-out); }
+.dish-card:hover { border-color: #c6d2bb; }
+.order-list-card { transition: border-color var(--duration-quick) var(--ease-in-out), transform var(--duration-fast) var(--ease-smooth-out); }
+.order-list-card:hover { transform: translateY(-2px); }
+.stat-card { transition: border-color var(--duration-quick) var(--ease-in-out), background-color var(--duration-quick) var(--ease-in-out); }
+.connection-dot { transition: background-color var(--duration-fast) var(--ease-in-out); }
+.status { transition: color var(--duration-quick) var(--ease-in-out), background-color var(--duration-quick) var(--ease-in-out); }
+.status-label { display: inline-block; animation: foodies-feedback var(--duration-quick) var(--ease-in-out) backwards; }
+.error-box { animation: foodies-feedback var(--duration-fast) var(--ease-in-out) backwards; }
+.order-progress > div, .order-progress > div > span { transition: color var(--duration-fast) var(--ease-in-out), background-color var(--duration-fast) var(--ease-in-out); }
+.cart-item { animation: foodies-content-in var(--duration-fast) var(--ease-smooth-out) backwards; }
+.hero-copy > *, .store-card, .dish-card, .order-list-card, .kitchen-order {
+  animation: foodies-content-in var(--duration-slow) var(--ease-smooth-out) backwards;
+}
+.hero-copy > :nth-child(2), .store-grid > :nth-child(2), .dish-grid > :nth-child(2), .board-grid > :nth-child(2) { animation-delay: var(--duration-stagger); }
+.hero-copy > :nth-child(3), .dish-grid > :nth-child(3), .board-grid > :nth-child(3) { animation-delay: calc(var(--duration-stagger) * 2); }
+.hero-copy > :nth-child(4), .dish-grid > :nth-child(4) { animation-delay: calc(var(--duration-stagger) * 3); }
+.hero-copy > :nth-child(5) { animation-delay: calc(var(--duration-stagger) * 4); }
+.hero .ready-note, .hero-sticker { animation: none; }
+
+@keyframes foodies-content-in {
+  from { opacity: 0; translate: 0 var(--distance-base); }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes foodies-feedback {
+  from { opacity: 0; translate: 0 var(--distance-micro); filter: blur(var(--blur-small)); }
+  to { opacity: 1; translate: 0 0; filter: blur(0); }
+}
+
+@media (max-width: 600px) {
+  header .motion-nav, header .motion-nav.is-open {
+    position: absolute; top: 72px; left: 0; right: 0; display: flex;
+    flex-direction: column; gap: 0; padding: 12px 22px;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    box-shadow: 0 10px 20px #263b2e10;
+  }
+  header .motion-nav {
+    visibility: hidden; opacity: 0; transform: translateY(calc(-1 * var(--distance-base))); pointer-events: none;
+    transition: opacity var(--duration-quick) var(--ease-smooth-out), transform var(--duration-quick) var(--ease-smooth-out), visibility 0s var(--duration-quick);
+  }
+  header .motion-nav.is-open {
+    visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto;
+    transition: opacity var(--duration-fast) var(--ease-smooth-out), transform var(--duration-fast) var(--ease-smooth-out), visibility 0s;
+  }
+  header .motion-nav a { padding: 13px 0; font-size: 13px; }
+  .mobile-menu .menu-icons { position: relative; width: 24px; height: 24px; display: block; }
+  .menu-icons svg { position: absolute; inset: 0; transition: opacity var(--duration-fast) var(--ease-in-out), transform var(--duration-fast) var(--ease-in-out); }
+  .menu-icons svg:last-child { opacity: 0; transform: rotate(-45deg) scale(.8); }
+  .mobile-menu[aria-expanded="true"] .menu-icons svg:first-child { opacity: 0; transform: rotate(45deg) scale(.8); }
+  .mobile-menu[aria-expanded="true"] .menu-icons svg:last-child { opacity: 1; transform: rotate(0) scale(1); }
+  .toast-position { bottom: max(18px, env(safe-area-inset-bottom)); }
+  .admin-nav.t-tabs { gap: 7px; }
+}
+
+@media (hover: none) {
+  .store-card:hover, .order-list-card:hover, .store-card:hover img, .store-card:hover .store-title > span { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .store-card:hover, .order-list-card:hover, .store-card:hover img, .store-card:hover .store-title > span { transform: none; }
+  .t-digit { will-change: auto; }
+}
