@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowRight, ShoppingBag, UserRound, X, Check, Utensils, LogOut, Menu } from 'lucide-react';
 import { api, session, Session, Dish, Store } from '@/lib/api';
+import { createCartKey } from '@/lib/cart-key';
 type Cart = { storeId: string; slug: string; storeName: string; items: { dish: Dish; quantity: number }[]; key: string };
 type Context = { auth: Session | null; authLoading: boolean; refresh: () => Promise<void>; cart: Cart | null; cartScrollRequest: number; requestCartScroll: () => void; setCart: (cart: Cart | null) => void; add: (store: Store, dish: Dish) => void; notify: (s: string) => void; login: () => void; };
 const Ctx = createContext<Context>(null!);
@@ -24,11 +25,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   function setCart(c: Cart | null) { updateCart(c); }
   function add(store: Store, dish: Dish) {
     if (cart && cart.storeId !== store.id && !window.confirm(`Tu carrito tiene platillos de ${cart.storeName}. ¿Quieres vaciarlo y elegir en ${store.name}?`)) return;
-    const current = cart?.storeId === store.id ? cart : { storeId: store.id, slug: store.slug, storeName: store.name, items: [], key: crypto.randomUUID() };
+    const current = cart?.storeId === store.id ? cart : { storeId: store.id, slug: store.slug, storeName: store.name, items: [], key: createCartKey() };
     const found = current.items.find(i => i.dish.id === dish.id);
     if (found && found.quantity >= 50) { notify('El máximo por platillo es 50.'); return; }
     const items = found ? current.items.map(i => i.dish.id === dish.id ? { dish, quantity: i.quantity + 1 } : i) : [...current.items, { dish, quantity: 1 }];
-    setCart({ ...current, items, key: crypto.randomUUID() }); notify(`${dish.name} agregado`);
+    setCart({ ...current, items, key: createCartKey() }); notify(`${dish.name} agregado`);
   }
   async function devLogin(account: string) { setBusy(true); setLoginError(''); try { await api(`/auth/development/${account}`, { method: 'POST' }); await refresh(); setShowLogin(false); } catch (e) { setLoginError((e as Error).message); } finally { setBusy(false); } }
   return <Ctx.Provider value={{ auth, authLoading, refresh, cart, cartScrollRequest, requestCartScroll, setCart, add, notify, login: () => { setLoginError(''); setShowLogin(true); } }}>{children}
